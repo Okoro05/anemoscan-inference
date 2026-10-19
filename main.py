@@ -103,11 +103,11 @@ async def predict(file: UploadFile = File(...)):
             detail=f"Model inference failed: {exc}",
         )
 
-    anemia_probability = sigmoid(anemia_logit)
-    anemia_detected = anemia_probability >= 0.5
+    anemia_probability = float(sigmoid(anemia_logit))
+    anemia_detected = bool(anemia_probability >= 0.5)
 
     return {
         "anemiaDetected": anemia_detected,
-        "anemiaProbability": round(float(anemia_probability), 4),
+        "anemiaProbability": round(anemia_probability, 4),
         "status": "Anemia Detected" if anemia_detected else "No Anemia Detected",
     }
